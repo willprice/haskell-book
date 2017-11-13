@@ -1,0 +1,104 @@
+* Chapter 4: Basic datatypes
+
+  Types are a grouping of values that share something in common. Sometimes the
+  thing in common is abstract, like a model of a concept.
+
+  Data constructors are the /values/ that inhabit the /type/ they are defined in.
+  Values appear at the /term-level/ of a program, they appear in the code or the
+  evaluation of an expression.
+
+  Data declarations are of the form: ~data <Name> = <DataConstructor> [|
+  <DataConstructor>]+~.
+
+  You can query the definition of a datatype using ~:info~ in GHCI on a type...
+
+  #+BEGIN_SRC haskell
+Prelude> :info Bool
+data Bool = True | False
+  #+END_SRC
+
+** Numeric types
+*** Integral numbers
+    - ~Int~, fixed precision
+    - ~Integer~, big num
+*** Fractional
+    - ~Float~, single precision
+    - ~Double~, double precision
+    - ~Rational~, fractional number representing ratio composed of two ~Integer~ values
+    - ~Scientific~, space efficient and almost arbitrary precision type.
+      Coefficient is stored as an ~Integer~ (big num) and the exponent as an
+      ~Int~ (fixed). This is available as a library, ~cabal install scientific~
+
+  The numeric data types all implement the /typeclass/ ~Num~. ~(*)~, ~(+)~,
+  ~(-)~ are definied in the ~Num~ typeclass.
+
+  Bounded numerical types implement the ~Bounded~ typeclass which provides
+  ~minBound~ and ~maxBound~ to inspect the limits of values of the type.
+
+  Type class constraints are of the form ~<FunctionName> :: <TypeClass>
+  <TypeVar> => <TypeVar>~ e.g. ~(/) :: Fractional a => a -> a -> a~ which states
+  that ~a~ has to implement the type class ~Fractional~.
+
+  Use arbitrary precision types by default unless you have a good reason not to.
+
+** Go on and Bool me
+  Not equals is ~/=~ unlike other languages.
+
+  Types that can be checked for equality implement the ~Eq~ typeclass that has a
+  single function: ~==~. Types that can have an ordering between values
+  implement the ~Ord~ typeclass.
+
+** Tuples
+   The type constructor of a tuple is defined as ~data (,) a b = (,) a b~,
+   several interesting things are happening here, first we're defining a
+   /product type/ since we have a conjunction of type variables, both ~a~ and
+   ~b~ must be filled with concrete types to realise a tuple type. The type
+   variables are different, i.e. ~a~ isn't the same type as ~b~ therefore you
+   can make a tuple with two different types, e.g. ~Int~ and ~Integer~ like the
+   ~Rational~ number type. The parentheses around the comma share the same
+   function as parentheses in a function definition which has a symbolic name,
+   it means that the data constructor ~,~ is meant to be used infix style.
+
+   - ~fst :: (a, b) -> a~
+   - ~snd :: (a, b) -> b~
+   - ~swap :: (a, b) -> (b, a)~
+
+** Lists
+   Elements of a list must all be of the same type.
+
+   #+BEGIN_SRC haskell
+   data [] a = [] | a : [a]
+   #+END_SRC
+
+** Definitions
+
+   A /typeclass/ is a set of operations defined with respect to a polymorphic
+   type.
+
+   /Data constructors/ allow you to construct a /value/ of a /type/. They can
+   take 0 or more arguments like functions.
+
+   /Type constructors/ are not values, and can /only/ be used in /type
+   signatures/.
+
+   /Data declarations/ create both /type constructors/ and /data
+   constructors/. /Type constructors/ are on the left of the ~=~ in the data
+   declaration and value constructors on the right. Data declarations do not
+   necessarily have to create a /new/ type constructor.
+
+   /Type aliases/ allow you to give a type constructor a new name (acting as a
+   synonym)
+
+
+
+** Entities
+*** Term level
+    - Functions
+    - Term-level variables
+    - data constructors
+*** Type level
+    - Type variables
+    - Type constructors
+    - Type classes
+*** Other
+    - Modules

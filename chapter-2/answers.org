@@ -1,0 +1,74 @@
+* Comprehension check
+
+** 1. How would define the following in the REPL:
+
+   ~half x = x / 2~
+
+   Answer: ~let half x = x / 2~
+
+   ~square x = x * x~
+
+   Answer: ~let square x = x * x~
+
+
+** Write a function to compute the area of a circle
+
+   Answer: ~let circle_area r = 3.14 * r * r~
+
+** Rewrite the above but using the constant ~pi~
+
+   Answer: ~let circle_area r = pi * r * r~
+
+
+* Exercises
+
+** Parenthesization
+
+   - ~2 + 2 * 3 - 1 = 2 + (2 * 3) - 1~
+   - ~(^) 10 $ 1 + 1 = 10 ^ (1 + 1)~
+   - ~2 ^ 2 * 4 ^ 5  + 1 = ((2 ^ 2) * (4 ^ 5)) + 1$~
+
+** Equivalence
+
+   - ~1 + 1 = 2~, yes
+   - ~10 ^ 2 = 10 + 9 * 10~, yes
+   - ~400 - 37 = (-) 37 400~, yes
+   - ~100 `div` 3 = 100 / 3~, no, ~div~ performs integer division and ~/~ performs floating point division
+   - ~2 * 5 + 18 = 2 * (5 + 18)~, no since ~(+)~ has precedence 6 and ~(*)~ has
+     precedence 7 therefore ~(*)~ is reduced before ~(+)~
+
+** More fun with functions
+
+   Rewrite the following code so that it could be entered into the REPL
+
+   #+BEGIN_SRC haskell
+   z = 7
+   x = y ^ 2
+   waxOn = x * 5
+   y = z + 8
+   #+END_SRC
+
+   #+BEGIN_SRC haskell
+   let z = 7
+   let y = z + 8
+   let x = y ^ 2
+   let waxOn = x * 5
+   #+END_SRC
+
+   1. What will happen if you enter:
+
+      1. ~10 + waxOn~? Since ~waxon = 1125~ this evaluates to 1135
+      2. ~(+10) waxOn~? evaluates to 1135 since (+10) is a partially applied functions
+      3. ~(-) 15 waxOn~? evaluates to -1110
+      4. ~(-) waxOn 15~? evaluates to 1110
+
+   3. ~triple waxOn~ evaluates to ~waxOn * 3~
+
+   4. Rewriting ~waxOn~ using where:
+
+      #+BEGIN_SRC haskell
+      waxOn = x * 5
+        where x = y ^ 2
+              y = z + 8
+              z = 7
+      #+END_SRC

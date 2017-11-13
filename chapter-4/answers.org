@@ -1,0 +1,101 @@
+* Answers
+** Exercises: Mood Swing
+
+   ~data Mood = Blah | Woot deriving Show~
+
+   1. What is the type constructor, or name of this type: /Mood/
+   2. If the function requires a ~Mood~ value, what are the values you could
+      possibly use? ~Blah~, ~Woot~.
+   3. We are trying to write a function ~changeMood~ to change Chris's mood
+      instantaneously. It should act like ~not~ in that, given one value, it
+      returns the /other/ value of the same type. So far, we've written a type
+      signature ~changeMood :: Mood -> Woot~. What's wrong with that? The type
+      signature is malformed, ~Woot~ is a data constructor, and a /term-level/
+      expression, not a /type-level/ expression (i.e. it is not a type) the
+      correct signature would be: ~changeMood :: Mood -> Mood~.
+   4. Now we want to write the function that changes his mood. Given an input
+      mood, it gives us the other one. Fix any mistakes and complete the
+      function:
+
+      #+BEGIN_SRC haskell
+      changeMood Mood = Woot
+      changeMood _ = Blah
+      #+END_SRC
+
+      Corrected:
+
+      #+BEGIN_SRC haskell
+      changeMood :: Mood -> Mood
+      changeMood Blah = Woot
+      changeMood Woot = Blah
+      #+END_SRC
+
+** Exercises: Find the Mistakes
+
+   1. ~not True && True~ should be ~not (True && True)~ or ~(not True) && True~
+   2. ~not (x = 6)~ should be ~not (x == 6)~
+   3. ~(1 * 2) > 5~ is fine
+   4. ~[Merry] > [Happy]~ should be ~["Merry"] > ["Happy"]~ or ~"Merry" > "Happy"~
+   5. ~[1, 2, 3] ++ "look at me!"~ should be ~['1', '2', '3'] ++ "look at me!"~
+
+** Chapter Exercises
+
+   #+INCLUDE: "./exercises.hs" src haskell
+
+   1. ~length :: [a] -> Integer~, interestingly its actual definition is ~length
+        :: t a -> Int~ where ~t~ is a type variable in the type class
+        ~Foldable~: ~class Foldable (t :: * -> *) where ...~.
+   2. What are the results of the following expressions:
+      1. ~length [1, 2, 3, 4, 5]~ -> 5
+      2. ~length [(1, 2), (2, 3), (3, 4)]~ -> 3
+      3. ~length allAwesome~ -> 2
+      4. ~length (concat allAwesome)~ -> 5
+   3. ~6 / 3~ is a valid expression since both numerical literals don't have a
+      type associated with them, hence they are interpreted as the same type
+      which is necessary to use ~(/)~ since it has the type signature ~(/) ::
+      (Fractional a) => a -> a -> a~. ~6 / length [1, 2, 3]~ isn't a valid
+      expression for 2 reasons, first ~(/)~ is left associative so it will be
+      applied before the length function to its argument, so really it should be
+      ~6 / (length [1, 2, 3])~, even then it still doesn't work because ~length~
+      returns an ~Int~ which doesn't implement ~Fractional~, it'd be the same as
+      trying to evaluate ~6 / (3 :: Int)~ which results in the following error:
+
+      #BEGIN_SRC
+      Prelude> 5 / (2 :: Int)
+
+      <interactive>:5:1: error:
+          • No instance for (Fractional Int) arising from a use of ‘/’
+          • In the expression: 5 / (2 :: Int)
+            In an equation for ‘it’: it = 5 / (2 :: Int)
+      #END_SRC
+   4. Using ~`div`~ works since ~div~ performs integer arithmetic:
+      ~6 `div` (length [1, 2, 3])~
+   5. ~True :: Bool~
+   6. ~False :: Bool~
+   7.
+      1. ~length allAwesome == 2~ -> ~False :: Bool~
+      2. ~length [1, 'a', 3, 'b']~, error due to different value types in the list
+      3. ~length allAwesome + length awesome~ -> ~5 :: Int~
+      4. ~(8 == 8) && ('b' < 'a')~ -> ~False~
+      5. ~(8 == 8) && 9~ invalid due to 9 not being a ~Bool~.
+   8. ~isPalindrome x = x == (reverse x)~
+   9. ~myAbs x = if x >= 0 then x else -x~
+   10.
+        #+BEGIN_SRC haskell
+        f :: (a, b) -> (c, d) -> ((b, d), (a, c))
+        f (a, b) (c, d) = ((b, d), (a, c))
+        #+END_SRC
+
+*** Correcting syntax
+    1.
+        #+BEGIN_SRC haskell
+        f xs = (+) l 1
+            where l = length xs
+        #+END_SRC
+    2. Identity function: ~\x = x~
+    3. ~f (a, b) = a~
+*** Matching function names to their types
+    1. ~show :: Show a => a -> String~
+    2. ~(==) :: Eq a => a -> a -> Bool~
+    3. ~fst :: (a, b) -> a~
+    4. ~(+) :: Num a => a -> a -> a~

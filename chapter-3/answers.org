@@ -1,0 +1,62 @@
+* Answers
+
+** Scope
+
+   1. Is ~y~ in scope for ~z~? Yes
+   2. Is ~h~ in scope for ~h~? No, ~h~ isn't defined
+   3. Is everything needed to define ~area~ in scope available? No, the parameter
+      ~d~ to ~area~ isn't passed to the function ~r~ that gets the radius from ~d~.
+   4. ~r~ and ~d~ are in scope for ~area~.
+
+** Syntax Errors
+
+   1. ~++ [1, 2, 3] [4, 5, 6]~ should be ~(++) [1, 2, 3] [4, 5, 6]~ as ~++~ is an infix op
+   2. ~'<3' ++ ' Haskell'~ should be ~"<3" ++ " Haskell"~ as ~'~ denotes a character not a
+      string. ~"~ is used to delimit a string
+   3. ~concat ["<3", " Haskell"]~ nothing wrong with this.
+
+** Reading syntax
+
+   1.
+      1. ~concat [[1, 2, 3], [4, 5, 6]]~ fine
+      2. ~++ [1, 2, 3] [4, 5, 6]~ -> ~(++) [1, 2, 3] [4, 5, 6]~
+      3. ~(++) "hello" " world"~ fine
+      4. ~["hello" ++ " world"]~ -> ~"hello" ++ " world"~
+      5. ~4 !! "hello"~ -> ~"hello" !! 4~
+      6. ~(!!) "hello" 4~ fine
+      7. ~take "4 lovely"~ -> ~take 4 "lovely"~
+      8. ~take 3 "awesome"~ fine
+   2.
+      1. ~[6, 12, 18]~
+      2. ~"rainbow"~
+      3. ~10~
+      4. ~"Jules"~
+      5. ~[2, 3, 5, 6, 8, 9]~
+
+** Building Functions
+
+   1.
+      1. ~exclaim x = x ++ "!"~
+      2. ~fifth x = x !! 4~
+      3. ~drop9 x = drop 9 x~
+   2. ~thirdLetter x = x !! 2~
+   3. ~letterIndex x = "Curry is awesome!" !! x~
+   4.
+       #+BEGIN_SRC haskell
+       rvrs s = third ++ " " ++ second ++ " " ++ first
+           where first = take (length "curry") s
+                 second = take 2 $ drop (1 + length first) s
+                 third = take 7 $ drop (2 + length first + length second) s
+       #+END_SRC
+   5.
+      #+BEGIN_SRC haskell
+      module Reverse where
+      rvrs s = third ++ " " ++ second ++ " " ++ first
+          where first = take (length "curry") s
+                second = take 2 $ drop (1 + length first) s
+                third = take 7 $ drop (2 + length first + length second) s
+
+      main :: IO ()
+      main = print $ rvrs "Curry is awesome!"
+      #+END_SRC
+   6.
