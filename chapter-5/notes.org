@@ -1,0 +1,24 @@
+* Chapter 5: Types
+  ~(->)~ is a type constructor taking two arguments.
+
+  Multiple type constraints are expressed as a tuple before the typeclass arrow
+  ~(=>)~.
+
+  Polymorphic means "made of many forms" in contrast to /monomorphic/ meaning
+  "made of one form".
+
+  2 types of polymorphism:
+
+    - /parametric polymorphism/
+    - /constrained polymorphism/
+
+  The type of polymorphism in Java facilitating dynamic dispatch is called
+  /ad-hoc polymorphism/ whereas generics are an implementation of /parametric polymorphism/.
+
+  "If a variable represents a set of possible values, then a type variable
+  represents a set of possible types".
+
+  A function is polymorphic when it has type variables in its type signature.
+
+  *(?)* What does /parametricity/ mean? Something about the behaviour of a function
+  not being able to change because it is applied to an argument of a different type.

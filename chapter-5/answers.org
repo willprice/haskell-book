@@ -1,0 +1,183 @@
+* Chapter 5 Answers
+** Exercises: Type Matching
+   - ~not :: Bool -> Bool~
+   - ~length :: [a] -> a~
+   - ~concat :: [[a]] -> [a]~
+   - ~head :: [a] -> a~
+   - ~(<) :: Ord a => a -> a -> Bool~
+** Exercises: Type Arguments
+   1. ~Char -> Char -> Char~
+   2. ~Char~
+   3. ~Num b => b~
+   4. ~Double~
+   5. ~[Char]~
+   6. ~Eq b -> b -> [Char]~
+   7. ~(Num a, Ord a) => a~
+   8. ~(Num a, Ord a)~
+   9. ~Integer~
+
+** Chapter Exercises
+
+*** Multiple choice
+
+   1. A value of type ~[a]~ is a list whose elements are all of some type ~a~
+   2. A function of type ~[[a]] -> [a]~ could take a list of strings as an argument
+   3. A function of type ~[a] -> Int -> a~ returns one element of type ~a~ from
+      a list
+   4. A function of type ~(a, b) -> a~ takes a tuple argument and returns the
+      first value.
+
+*** Determine the type
+
+   1.
+      1. ~(* 9) 6 :: Num a => a~
+      2. ~head [(0, "doge"), (1, "kitteh")] :: Num a => (a, [Char])~
+      3. ~head [0 :: Integer, "doge"), (1, "kitteh")] :: (Integer, [Char])~
+      4. ~if False then True else False :: Bool~
+      5. ~length [1, 2, 3, 4, 5] :: Int~
+      6. ~(length [1, 2, 3, 4]) > (length "TACOCAT") :: Bool~
+   2. ~w :: Num a => a~
+   3. ~z :: Num a => a -> a~
+   4. ~f :: Fractional a => a~
+   5. ~f :: [Char]~
+
+*** Does it compile?
+
+    1. ~bigNum $ 10~ causes issues as ~bigNum :: Num a => a~ so it can't be
+         applied to an argument
+    2. Fine
+    3. ~b 10~ fails as ~b :: Num a => a~ so can't be applied as a function,
+         likewise with ~d~
+    4. ~b~ can't be compiled
+
+*** Type variable or specific type constructor?
+
+    1. ~a~ is constrained polymorphic, ~b~ is polymorphic, ~Int~ is concrete
+    2. ~zed~ is polymorphic, ~Zed~ is concrete, ~Blah~ is concrete
+    3. ~b~ is constrained polymorphic, ~a~ is polymorphic, ~C~ is concrete
+    4. ~f~ is polymorphic, ~g~ is polymorphic, ~C~ is concrete
+
+*** Write a type signature
+
+    1. ~functionH :: [a] -> a~
+    2. ~functionC :: Ord a => a -> a -> Bool~
+    3. ~functionS :: (a, b) -> b~
+
+*** Given a type, write the function
+
+    1. ~i a = a~
+    2. ~c a b = a~
+    3. Yes
+    4. ~c' a b = b~
+    5. ~r a = a~ or ~r a = [head a]~
+    6. ~co bToC aToB a = bToC $ aToB a~
+    7. ~a _ b = b~
+    8. ~a' f a = f a~
+
+*** Fix it
+
+    1.
+       #+BEGIN_SRC haskell
+       module Sing where
+       fstString :: [Char] -> [Char]
+       fstString x = x ++ " in the rain"
+
+       sndString :: [Char] -> [Char]
+       sndString x = x ++ " over the rainbow"
+
+       sing = if (x > y) then fstString x else sndString y
+          where x = "Singin"
+                y = "Somewhere"
+       #+END_SRC
+
+    2.
+       #+BEGIN_SRC haskell
+       module Sing where
+       fstString :: [Char] -> [Char]
+       fstString x = x ++ " in the rain"
+
+       sndString :: [Char] -> [Char]
+       sndString x = x ++ " over the rainbow"
+
+       sing = if (x < y) then fstString x else sndString y
+          where x = "Singin"
+                y = "Somewhere"
+       #+END_SRC
+
+    3.
+       #+BEGIN_SRC haskell
+       module Arith3Broken where
+
+       main :: IO ()
+       main = do
+         print $ 1 + 2
+         putStrLn "10"
+         print (negate -1)
+         print ((+) 0 blah)
+           where blah = negate 1
+       #+END_SRC
+
+*** Type-Kwon-DO
+
+    #+BEGIN_SRC haskell
+    data Woot
+
+    data Blah
+
+    f :: Woot -> Blah
+    f _ = Blah
+
+    g :: (Blah, Woot) -> (Blah, Blah)
+    g (b, _) = (b, f b)
+    #+END_SRC
+
+    1.
+          #+BEGIN_SRC haskell
+          f :: Int -> String
+          f = show
+
+          g :: String -> Char
+          g = id
+
+          h :: Int -> Char
+          h = head . show
+          #+END_SRC
+
+    2.
+         #+BEGIN_SRC haskell
+         data A
+         data B
+         data C
+
+         q :: A -> B
+         q _ =  B
+
+         w :: B -> C
+         w _ = C
+
+         e :: A -> C
+         e = q . w
+         #+END_SRC
+
+    3.
+         #+BEGIN_SRC haskell
+         data X
+         data Y
+         data Z
+
+         xz :: X -> Z
+         xz = undefined
+
+         yz :: Y -> Z
+         yz = undefined
+
+         xform :: (X, Y) -> (Z, Z)
+         xform (x, y) -> (xz x, yz y)
+         #+END_SRC
+
+    4.
+       #+BEGIN_SRC haskell
+       munge :: (x -> y) -> (y -> (w, z)) -> x -> w
+       munge xToY yToWZ x = w
+          where (w, _) = yToWZ $ xToY x
+       #+END_SRC
