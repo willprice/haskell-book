@@ -1,0 +1,53 @@
+* Chapter 6 Answers
+** Multiple Choice
+   1. The ~Eq~ class makes equality tests possible
+   2. The typeclass ~Ord~
+   3. ~(>) :: Ord a => a -> a -> Bool~
+   4. In ~x = divMod 16 12~ the type of ~x~ is a tuple
+   5. The typeclass ~Integral~ includes ~Int~ and ~Integer~ numbers
+
+** Does it typecheck?
+   1. No because ~Person~ doesn't derive the ~Show~ typeclass so can't be printed.
+   2. Yes, ~settleDown :: Mood -> Mood~
+   3.
+      1. Acceptable inputs: ~Woot~, ~Blah~
+      2. It'd not compile because ~9 :: Num a => a~ and there is no instance of
+           ~Num~ defined for ~Mood~
+      3. ~Blah > Woot~ will fail because there is no instance of the ~Ord~
+         typeclass for ~Mood~.
+   4. Yes, type checks, notable ~s1 :: Object -> Sentence~.
+
+** Given a datatype declaration, what can we do?
+   1. Doesn't type check as ~"chases"~ and ~True~ aren't wrapped in ~Rocks~ and
+      ~Yeah~ data constructors respectively.
+   2. Yes
+   3. Yes
+   4. No, because ~Papu~ doesn't impelement ~Ord~ nor do the two types it wraps
+      ~Rocks~ and ~Yeah~.
+
+** Match the types
+   1. No
+   2. No
+   3. Yes, there is a ~Fractional~ instance defined for ~Float~
+   4. Yes, there is a ~RealFrac~ instance defined for ~Float~
+   5. Yes because the type constraint is more specialised than the previous one
+   6. Yes, as above
+   7. No, because ~sigmund~ returns ~myX~ which is defined as an ~Int~.
+   8. No, because ~sigmund~ returns ~myX~ which is defined as an ~Int~ and ~Num
+      a => a~ is more general than ~Int~.
+   9. Yes, ~Int~ is more specialised than ~Ord a => [a]~ (and ~Int~ has an ~Ord~ instance)
+   10. Yes, the definition does not use any of the functions defined on the
+       ~Char~ type but only those in the  ~Ord~ type class.
+   11. No, because ~mySort~ is defined as ~[Char] -> [Char]~ thus constraining ~signifier~.
+
+** Type-Kwon-Do Two: Electric Typealoo
+   1.
+      #+BEGIN_SRC haskell
+      chk :: Eq b => (a -> b) -> a -> b -> Bool
+      chk f a b = (f a) == b
+      #+END_SRC
+   2.
+      #+BEGIN_SRC haskell
+      arith :: Num b => (a -> b) -> Integer -> a -> b
+      arith = f int a = (f a ) + b
+      #+END_SRC

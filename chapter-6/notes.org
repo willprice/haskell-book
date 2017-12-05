@@ -1,0 +1,21 @@
+* Chapter 6: Typeclasses
+** What are typeclasses?
+   Define how a set of types are *consumed*, i.e. their interface.
+
+   We can use ~:info Type~ to query the typeclass instances of ~Type~.
+
+   - ~Bounded~ is a type class for types that have upper and lower bounds.
+   - ~Enum~ is a type class for types that can be enumerated
+   - ~Read~ is a type class for types that can be read from strings, *AVOID*
+   - ~Show~ is a type class for types that can be rendered to strings,
+     interestingly you're not encouraged to avoid it unlike ~Read~.
+
+   One can *derive* certain typeclasses which means the implementation code is
+   automatically generated, these typeclasses are:
+
+   - ~Eq~
+   - ~Ord~
+   - ~Enum~
+   - ~Bounded~
+   - ~Read~
+   - ~Show~
