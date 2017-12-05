@@ -1,0 +1,66 @@
+* Chapter 7
+** Multiple Choice
+   1. A polymorphic function may resolve to values of different types, depending
+      on inputs
+   2. ~g . f :: Char -> [String]~
+   3. ~(Ord a, Num a) => a -> Bool~
+   4. A function with the type ~(a -> b) -> c~ is a higher-order function
+   5. ~f True :: Bool~
+
+** Let's write code
+   1.
+      1. Rewriting using ~divMod~
+         #+BEGIN_SRC haskell
+         tensDigit :: Integral a => a -> a
+         tensDigit x = d
+           where (_, d) = divMod (x `div` 10) 10
+         #+END_SRC
+      2. Yes, ~divMod~ returns a tuple where each item is constrained to be an
+         ~Integral~.
+      3.
+             #+BEGIN_SRC haskell
+             hundredsDigit :: Integral a => a -> a
+             hundredsDigit x = d
+               where (_, d) = divMod (x `div` 100) 10
+             #+END_SRC
+   2.
+         #+BEGIN_SRC haskell
+         -- case expression
+         foldBool :: a -> a -> Bool -> a
+         foldBool a b second = case second of
+            True -> b
+            False -> a
+
+         -- guard statements
+         foldBool :: a -> a -> Bool -> a
+         foldBool a b second
+            | second == True  = b
+            | second == False = a
+         #+END_SRC
+   3.
+       #+BEGIN_SRC haskell
+       g :: (a -> b) -> (a, c) -> (b, c)
+       g f (a, c) = (f a, c)
+       #+END_SRC
+
+   4.
+       #+BEGIN_SRC haskell
+       module Arith4 where
+
+       roundTrip :: (Show a, Read a) => a -> a
+       roundTrip a = read (show a)
+
+       main = do
+         print (roundTrip 4)
+         print (id 4)
+       #+END_SRC
+
+   5. ~roundTrip = read . show~
+   6.
+       #+BEGIN_SRC haskell
+       roundTrip :: (Show a, Read b) => a -> b
+       roundTrip = read . show
+       #+END_SRC
+
+       ~print (roundTrip 4 :: Integer)~, We have to tell GHCI which instance of
+      ~read~ to dispatch on, without it how does it know which implementation to use?
