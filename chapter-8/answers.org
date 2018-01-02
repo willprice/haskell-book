@@ -1,0 +1,13 @@
+* Chapter 8: Recursion
+** Chapter Exercises
+*** Review of types
+   1. What is the type of ~[[True, False], [True, True], ...]~? ~[[Bool]]~
+   2. What has the same type as ~[[True, False], [True, True], [False, True]]~?
+      ~[[3 == 3], [6 > 5], [3 < 4]]~
+   3. All of the statements are true
+   4. ~func "Hello" "World"~
+
+*** Reviewing currying
+    1. ~appedCatty = "woohoo! mrow woops"~
+    2. ~frappe "1" = "haha mrow 1"~
+    3. ~frappe (appedCatty "2") = "haha woohoo! woohoo! mrow 2~
