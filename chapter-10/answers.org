@@ -1,0 +1,132 @@
+* Chapter 10: Folding Lists
+
+folds are catamorphisms
+
+~foldr~ stands for fold right, as it is right associative.
+
+#+BEGIN_SRC haskell
+foldr :: (a -> b -> b) -> b -> [a] -> b
+foldr f acc [] = acc
+foldr f acc (x:xs) = f x (foldr f acc xz)
+
+foldl :: (b -> a -> b) -> b -> [a] -> b
+foldl f acc [] = acc
+foldl f acc (x:xs) = foldl f (f acc x) xs
+#+END_SRC
+
+~foldr~ can be used with functions that can shortcircuit and evaluate before
+iterating over the whole list, so can be used on infinite lists, whereas
+~foldl'~ cannot, as it would never terminate, however ~foldl'~ is more memory
+efficient because it is tail recursive.
+
+~scanr~ and ~scanl~ show the cumulative process of a fold, e.g.
+~scanl (+) 0 [1..5] = [0, 1, 3, 6, 10, 15]~
+
+~last (scanl f z xs) = foldl f z xs~
+
+~head (scanr f z xs) = foldr f z xs~
+
+The spine is traversed in the same direction left to right, however the
+associativity determines the order in which the fold is executed.
+
+~foldl~ Always has to evaluate the spine of the object being folded over
+
+~foldr~ isn't strict in the spine, if the function you're using in the fold can
+return early then it will if possible
+
+** Exercises: Understanding Folds
+
+   1. ~foldr (*) 1 [1..5]~ will return the same as ~foldl (*) 1 [1..5]~ and
+      ~foldl (flip (*)) 1 [1..5]~
+   2.
+       #+BEGIN_SRC haskell
+       foldl (flip (*)) 1 [1..3] =
+       foldl (flip (*)) ((flip (*)) 1 1) [2..3] =
+       foldl (flip (*)) ((flip (*)) ((flip (*)) 1 1) 2) [3] =
+       foldl (flip (*)) ((flip (*)) ((flip (*)) ((flip (*)) 1 1) 2) 3 [] =
+       foldl (flip (*)) ((flip (*)) ((flip (*)) ((flip (*)) 1 1) 2) 3 [] =
+       6
+       #+END_SRC
+   3. One difference between ~foldr~ and ~foldl~ is... ~foldr~, but not ~foldl~
+      associates to the right
+   4. Folds are catamorphisms, which means they are generally used to... reduce structure
+   5.
+      1. ~foldr (++) "" ["woot", "WOOT", "woot"]~
+      2. ~foldr max [] ["fear", "is", "the", "little", "death"]~ or perhaps
+         ~foldr max '\0' "fear is the little death"~
+      3. ~foldr (&&) True [False, True]~
+      4. ~True~, it can never return a different answer as the disjunction of
+         true with anything else will always be true.
+      5. ~foldr ((++) . show) "" [1..5]~
+      6. ~foldl const 'a' [1..5]~
+      7. ~foldl const 0 "tacos"~
+      8. ~foldr (flip const) 0 "burritos"~
+      9. ~foldr (flip const) 'z' [1..5]~
+
+** Exercises: Database Processing
+
+   #+INCLUDE: "db.hs" src haskell
+
+** Chapter Exercises
+
+   1.
+       #+BEGIN_SRC haskell
+       stops = "pbtdkg"
+       vowels = "aeiou"
+
+       combinations as bs = [(b, a, b') | a <- as , b <- bs , b' <- bs]
+       combinations2 as bs = [(b, a, b') | a <- as , b <- bs , b' <- bs, b == 'p']
+       -- combinations will work with nouns and verbs as `as` and `bs` are polymorphic
+       #+END_SRC
+
+   2. ~(map length (words x))~ splits ~x~ into words, then counts the number of
+      characters per word - i.e. it counts the number of chars in each word in the string.
+      ~(length (words x))~ counts how many words there are in the string.
+      Finally ~seekritFunc~ sums the number of chars in each word, then divides
+      by the number of words yielding the average number of chars per word.
+
+   3.
+       #+BEGIN_SRC haskell
+       avgWordLength x = (fromIntegral . sum $ map length $ words x) / (fromIntegral . length $ words x)
+
+       #+END_SRC
+
+*** Rewriting functions using folds
+
+    #+BEGIN_SRC haskell
+    myOr :: [Bool] -> Bool
+    myOr = foldr (||) False
+
+    myAny :: (a -> Bool) -> [a] -> Bool
+    myAny f = foldr ((||) . f) False
+
+    myElem :: Eq a => a -> [a] -> Bool
+    myElem x = foldr ((||) . (==) x)
+
+    myElem' :: Eq a => a -> [a] -> Bool
+    myElem' x = myElem ((==) x)
+
+    myReverse :: [a] -> [a]
+    myReverse = foldl' (flip (:)) []
+
+    myMap :: (a -> b) -> [a] -> [b]
+    myMap f = foldr (\x acc -> f x : acc)
+
+    myFilter :: (a -> Bool) -> [a] -> [a]
+    myFilter f = foldr (\x acc -> if f x then x : acc else acc) []
+
+    squish :: [[a]] -> [a]
+    squish = foldr (\xs acc -> xs ++ acc) []
+
+    squishMap :: (a -> [b]) -> [a] -> [b]
+    squishMap f = foldr (\x acc -> (f x) ++ acc) []
+
+    squishAgain :: [[a]] -> [a]
+    squishAgain = squishMap (\x -> [x])
+
+    myMaximumBy :: (a -> a -> Ordering) -> [a] -> a
+    myMaximumBy cmp xs = foldl' (\acc x -> if (cmp x acc) == GT then x else acc) (head xs) xs
+
+    myMinimumBy :: (a -> a -> Ordering) -> [a] -> a
+    myMinimumBy cmp xs = foldl' (\acc x -> if (cmp x acc) == LT then x else acc) (head xs) xs
+    #+END_SRC
