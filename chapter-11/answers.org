@@ -1,0 +1,108 @@
+* Chapter 11: Algebraic datatypes
+** Exercises: Dog Types
+   1. Is ~Doggies~ a type constructor a data constructor? Type constructor
+   2. What is the kind of ~Doggies~? ~Doggies :: * -> *
+   3. What is the kind of ~Doggies String~? ~Doggies String :: *~
+   4. What is the type of ~Husky 10~? ~Husky :: (Num a) => Doggies a~
+   5. What is the type of ~Husky (10 :: Integer)~? ~Husky (10 :: Integer) :: Doggies Integer~
+   6. What is the type of ~Mastiff "Scooby Doo"~? ~Mastiff "Scooby Doo" :: Doggies String~
+   7. Is ~DogueDeBordeaux~ a type constructor or a data constructor? Both, there
+      is a type constructor by that name, and a data constructor by that name.
+      Type constructors and data constructors sit in different name spaces so
+      they don't collide.
+   8. What is the *type* of ~DogueDeBordeaux~? ~DogueDeBordeaux :: a -> DogueDeBordeaux a~
+   9. What is the type of ~DogueDeBordeaux "doggie!"~? ~DogueDeBordeaux "doggie!" :: DogueDeBordeaux String~
+** Exercises: Verhicles
+   1. ~myCar :: Vehicle~
+   2. See ~vehicle.hs~
+   3. See ~vehicle.hs~
+   4. ~getManu~ is a partial function, so when run on a ~Plane~ will cause an exception
+   5. See ~vehicle.hs~
+** Exercises: Cardinality
+   1. ~data PugType = PugData~ has cardinality 1
+   2. ~data Airline = PapuAir | CatapultsR'Us | TakeYourChangesUnited~ has cardinality 3
+   3. ~Int16~ has cardinality 2**16
+   4. ~Int~ is 64 bit on my machine as can be checked by ~(log . fromIntegral $
+      maxBount :: Int) / (log 2.0) + 1~, ~Integer~ has no ~Bounded~ instance,
+      this is because it is arbitrary precision--there is no upper or lower bound.
+   5. ~Int8~ has cardinality 256 because each bit can have one of
+      two values and there are 8 bits in ~Int8~ hence the number of values
+      inhabiting the type are ~2**8 = 256~
+** Exercises: For Example
+   1. ~MakeExample :: Example~, ~:t Example~ doesn't work because ~Example~ is a
+      type constructor, it doesn't exist at the term level, you can determine
+      its kind using ~:k Example~ which yield ~Example :: *~
+   2. ~:i Example~ shows the type classes defined for the ~Example~ type, which
+      is ~Show~ as that is the only class derived when creating the type.
+   3. ~data Example2 = MakeExample2 Int~, ~MakeExample2 :: Int -> Example2~
+** Exercises: How Does Your Garden Grow?
+   #+BEGIN_SRC haskell
+   data FlowerType = Gardenia
+                   | Daisy
+                   | Rose
+                   | Lilac
+                   deriving Show
+
+   type Gardener = String
+
+   data Garden =
+     Garden Gardener FlowerType
+     deriving Show
+   #+END_SRC
+
+   What is the sum of products normal form of ~Garden~?
+
+   #+BEGIN_SRC haskell
+   data Garden = Garden Gardener Gardenia
+               | Garden Gardener Daisy
+               | Garden Gardener Rose
+               | Garden Gardener Lilac
+   #+END_SRC
+** Exercise: Programmers
+   #+BEGIN_SRC haskell
+   data OperatingSystem =
+          GnuPlusLinux
+        | OpenBSDPlusNevermindJustBSDStill
+        | Mac
+        | Windows
+        deriving (Eq, Show)
+
+   data ProgLang =
+          Haskell
+        | Agda
+        | Idris
+        | PureScript
+        deriving (Eq, Show)
+
+   data Programmer = Programmer
+      { os :: OperatingSystem
+      , lang :: ProgLang }
+
+   allOperatingSystems :: [OperatingSystem]
+   allOperatingSystems =
+     [ GnuPlusLinux
+     , OpenBSDPlusNevermindJustBSDStill
+     , Mac
+     , Windows
+     ]
+
+   allLanguages :: [ProgLang]
+   allLanguages = [Haskell, Agda, Idris, PureScript]
+
+   allProgrammers :: [Programmer]
+   allProgrammers = [ Programmer { os = os, lang = lang }
+                    | os <- allOperatingSystems
+                    , lang <- allLanguages ]
+   #+END_SRC
+** Exerises: The Quad
+    1. ~4 + 4 =8~
+    2. ~4 * 4 = 16~
+    3. ~4 ^ 4 = 256~
+    4. ~2 * 2 * 2 = 8~
+    5. ~(2 ^ 2) ^ 2 = 16~
+    6. ~2 ^ (4 ^ 4) = 65536~
+** Chapter Exercises
+   1. ~Weekday~ is a type with five data constructors
+   2. ~f :: Weekday -> String~
+   3. Types defined with the ~data~ keyword must begin with a capital letter
+   4. The function ~g xs = xs !! (length xs - 1)~ delivers the final element of ~xs~.
