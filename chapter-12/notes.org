@@ -1,0 +1,18 @@
+* Chapter 12: Signaling adversity
+
+You can pattern match and use case expressions on data types that don't derive
+~Eq~ however you can't use guards with ~(==)~.
+
+~Left~ in ~Either~ is used to hold the error case. This is justified over
+putting the error in ~Right~ for some reason that I don't understand: "We use
+~Left~ as our invalid or error constructor for a couple of reasons. It is
+conventional to do so in Haskell, ... Normally it is your error or invalid
+result that is going to cause a stop to whatever work is being done by your
+program. ~Functor~ will not map over the left type argument because it has been
+applied away"
+
+Kind ~*~ is the kind of all standard lifted types, whereas ~#~ is the kind of
+unlifted types. Lifted types can be inhabited by *bottom*, Unlifted types cannot
+be inhabited by bottom. Lifted types comprise of a pointer whereas unlifted
+types comprise a value (e.g. machine types and raw pointers). ~Newtypes~ are
+unlifted even though their kind is ~*~ because they do not create new pointers
