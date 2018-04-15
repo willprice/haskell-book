@@ -1,0 +1,59 @@
+-- This file has been generated from package.yaml by hpack version 0.27.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: d0bb3993854e940ebbe0274344781d9cec1152240daa2ff23b0b02c54ed59773
+
+name:           morse
+version:        0.1.0.0
+description:    Please see the README on Github at <https://github.com/willprice/morse#readme>
+homepage:       https://github.com/willprice/morse#readme
+bug-reports:    https://github.com/willprice/morse/issues
+author:         Will Price
+maintainer:     will.price94@gmail.com
+copyright:      2018 Will Price
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+cabal-version:  >= 1.10
+
+extra-source-files:
+    ChangeLog.md
+    README.md
+
+source-repository head
+  type: git
+  location: https://github.com/willprice/morse
+
+library
+  exposed-modules: Morse
+  ghc-options: -Wall -fwarn-tabs
+  hs-source-dirs: src
+  build-depends: base >=4.7 && <5,
+               , containers,
+               , QuickCheck
+  default-language: Haskell2010
+
+executable morse
+  main-is: Main.hs
+  hs-source-dirs: src
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends: base >=4.7 && <5
+               , morse
+               , containers,
+               , QuickCheck
+  default-language: Haskell2010
+
+test-suite morse-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_morse
+  hs-source-dirs:
+      test
+  ghc-options: -Wall -fno-warn-orphans
+  build-depends: base >=4.7 && <5
+               , containers
+               , morse
+               , QuickCheck
+  default-language: Haskell2010
