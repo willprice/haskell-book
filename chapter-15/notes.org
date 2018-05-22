@@ -1,0 +1,56 @@
+* Monoid, Semigroup
+
+- Algebra = operations + the set operated over.
+- Algebras are implemented with type classes in haskell.
+
+** Monoids
+
+- Binary operator
+  - associative $a ~ (b ~ c) = (a ~ b) ~ c$
+  - closed
+  - has identity
+- Identity: $\exists e \forall a : a ~ e = a$
+- Haskell operator: ~mappend~
+- Numeric types don't implement *Monoid* as there are two valid monoids for
+  integers: summation and multiplication
+- Instead there are `Sum` and `Product` types that wrap integers allowing you to
+  use the different monoids.
+- ~newtype~ doesn't incur any runtime overhead
+- ~newtype~ is like a single-member C union
+- The infix version of ~mappend~ is ~<>~
+- Abelian (commutative) monoid = variant with commutativity: $a ~ b = b ~ a$
+- ~newtype~s are used to disambiguate monoids where multiple monoids exist for a type.
+- Booleans have two monoids:
+  - ~All~
+  - ~Any~
+- Maybe's also have two monoids:
+  - ~First~ preferring the first instance of a ~Just~
+  - ~Last~ preferring the first instance of a ~Just~
+
+#+BEGIN_SRC haskell
+data Optional a = Empty
+                | Only a
+                deriving (Eq, Show)
+
+instance Monoid a => Monoid (Optional a) where
+  mempty = Empty
+  (Only a) `mappend` (Only b) = Only (a `mappend` b)
+  (Only a) `mappend` Empty = Only (a)
+  Empty `mappend` (Only b) = Only (b)
+  Empty `mappend` Empty = Empty
+#+END_SRC
+
+- The list Monoid isn't Abelian (commutative)
+- Orphan instances are when multiple type class instances are written for a type
+  (in separate packages), don't ever write these, if you want to implement a new
+  monoid then ~newtype~ the type.
+- Put type class instances in the same module as the type so typeclasses can't
+  be optionally imported.
+
+
+** Semigroup: Monoid without identity
+
+- A semigroup is formed of a binary operator that is associative and is closed
+- Example semigroup: ~NonEmpty~ (list), because it has no empty list by design
+  we can't form a monoid with it
+-
