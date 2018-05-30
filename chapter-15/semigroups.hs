@@ -2,7 +2,8 @@ module Main where
 
 import Data.Semigroup
 import Data.Monoid hiding ((<>))
-import Test.QuickCheck
+import Test.QuickCheck hiding (Success, Failure)
+import Test.Hspec
 
 
 data Trivial = Trivial
@@ -114,6 +115,47 @@ instance (Arbitrary a, Arbitrary b) => Arbitrary (Or a b) where
 
 newtype Combine a b = Combine { unCombine :: (a -> b) }
 
+instance (Semigroup b) => Semigroup (Combine a b) where
+    c1 <> c2 = Combine $ (unCombine c1) <> (unCombine c2)
+
+instance (CoArbitrary a, Arbitrary b) => Arbitrary (Combine a b) where
+    arbitrary = do
+        f <- arbitrary
+        return $ Combine f
+
+-- Without an Eq instance we can't test associativity
+-- We'd probably been to do something a bit more clever
+-- and actually run the function and check equality of output.
+
+
+newtype Comp a = Comp { unComp :: (a -> a) }
+
+instance Semigroup (Comp a) where
+    a <> b = Comp $ (unComp a) . (unComp b)
+
+
+data Validation a b = Failure a
+                    | Success b
+                    deriving (Eq, Show)
+instance Semigroup a => Semigroup (Validation a b) where
+    s@(Success _) <> (Success _) = s
+    s@(Success _) <> (Failure _) = s
+    (Failure _) <> s@(Success _) = s
+    (Failure f1) <> (Failure f2) = Failure (f1 <> f2)
+
+success :: Int -> Validation String Int
+success = Success
+
+failure :: String -> Validation String Int
+failure = Failure
+
+validationTests = it "Semigroup (Validation String Int)" $ do
+    (success 1 <> failure "blah") `shouldBe` (Success 1)
+    (failure "woot" <> failure "blah") `shouldBe` (Failure "wootblah")
+    (success 1 <> success 2) `shouldBe` (Success 1)
+    (failure "woot" <> success 2) `shouldBe` (Success 2)
+
+
 
 semigroupAssoc :: (Eq m, Semigroup m) => m -> m -> m -> Bool
 semigroupAssoc a b c = (a <> (b <> c)) == ((a <> b) <> c)
@@ -144,13 +186,20 @@ type OrAssoc = Or (Sum Integer) (Product Integer) ->
                Or (Sum Integer) (Product Integer) ->
                Or (Sum Integer) (Product Integer) -> Bool
 
+type CombineAssoc = Combine (Sum Integer) (Sum Integer) ->
+                    Combine (Sum Integer) (Sum Integer) ->
+                    Combine (Sum Integer) (Sum Integer) -> Bool
+
 main :: IO ()
-main = do
-    quickCheck (semigroupAssoc :: TrivAssoc)
-    quickCheck (semigroupAssoc :: IdentityAssoc)
-    quickCheck (semigroupAssoc :: TwoAssoc)
-    quickCheck (semigroupAssoc :: ThreeAssoc)
-    quickCheck (semigroupAssoc :: FourAssoc)
-    quickCheck (semigroupAssoc :: BoolConjAssoc)
-    quickCheck (semigroupAssoc :: BoolDisjAssoc)
-    quickCheck (semigroupAssoc :: OrAssoc)
+main = hspec $ do
+    describe "Semigroup" $ do
+        describe "Associativity" $ do
+            it "trivial" $ property (semigroupAssoc :: TrivAssoc)
+            it "Identity" $ property (semigroupAssoc :: IdentityAssoc)
+            it "Two" $ property (semigroupAssoc :: TwoAssoc)
+            it "Three" $ property (semigroupAssoc :: ThreeAssoc)
+            it "Four" $ property (semigroupAssoc :: FourAssoc)
+            it "BoolConj" $ property (semigroupAssoc :: BoolConjAssoc)
+            it "BoolDisj" $ property (semigroupAssoc :: BoolDisjAssoc)
+            it "Or" $ property (semigroupAssoc :: OrAssoc)
+        validationTests
