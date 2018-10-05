@@ -93,7 +93,7 @@ instance (Arbitrary a, Arbitrary b, Arbitrary c, Arbitrary d) => Arbitrary (Four
 
 
 instance Functor (Four' a) where
-    fmap f (Four' a b1 b2 b3) = Four' a (f b1) (f b2) (f b3)
+    fmap f (Four' a1 a2 a3 b) = Four' a1 a2 a3 (f b)
 
 instance (Arbitrary a, Arbitrary b) => Arbitrary (Four' a b) where
     arbitrary = do
