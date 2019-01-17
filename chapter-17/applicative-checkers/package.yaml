@@ -1,0 +1,41 @@
+name:                applicative-checkers
+version:             0.1.0.0
+github:              "willprice/applicative-checkers"
+license:             BSD3
+author:              "Will Price"
+maintainer:          "will.price94@gmail.com"
+copyright:           "2019 Will Price"
+
+extra-source-files:
+- README.md
+- ChangeLog.md
+
+# Metadata used when publishing your package
+# synopsis:            Short description of your package
+# category:            Web
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description:         Please see the README on GitHub at <https://github.com/willprice/applicative-checkers#readme>
+
+dependencies:
+- base >= 4.7 && < 5
+- checkers >= 0.4.11
+- QuickCheck >= 2.12.6.1
+
+library:
+  source-dirs: src
+  exposed-modules:
+    - BadMonoid
+
+tests:
+  applicative-checkers-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - applicative-checkers

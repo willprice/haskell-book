@@ -1,0 +1,91 @@
+#+TITLE: Applicative Functors
+
+Applicative Functors are Monoidal Functors. What does this mean? Well they obey
+both the Functor laws and the Monoid laws. Let's revisit them
+
+Here's the Monoid typeclass
+
+#+BEGIN_SRC haskell
+class Monoid a where
+  mempty :: a
+  mappend :: a -> a -> a
+  mconcat :: [a] -> a
+#+END_SRC
+
+and the laws are:
+
+- Identity:
+  - Right identity: ~a `mappend` mempty == a~
+  - Left identity: ~mempty `mappend` a == a~
+- Associativity: ~(a `mappend` (b `mappend` c)) == ((a `mappend` b) `mappend` c)~
+
+And the Functor typeclass:
+
+#+BEGIN_SRC haskell
+class Functor (f :: * -> *) where
+  fmap :: (a -> b) -> f a -> f b
+#+END_SRC
+
+and the laws are:
+
+- Identity: ~fmap id f == f~
+- Composition: ~fmap (g . h) f == (fmap g (fmap h f))~
+
+And an Applicative Functor is defined as
+
+#+BEGIN_SRC haskell
+class Functor f => Applicative f where
+  pure a :: a -> f a
+  <*> :: f (a -> b) -> f a -> f b
+#+END_SRC
+
+* Exercises: Lookup
+
+#+BEGIN_SRC haskell
+  import Data.List (elemIndex)
+
+
+  added :: Maybe Integer
+  added = (+3) <$> (lookup 3 $ zip [1, 2, 3] [4, 5, 6])
+
+  y :: Maybe Integer
+  y = lookup 3 $ zip [1, 2, 3] [4, 5, 6]
+
+  z :: Maybe Integer
+  z = lookup 2 $ zip [1, 2, 3] [4, 5, 6]
+
+  tupled :: Maybe (Integer, Integer)
+  tupled = (,) <$> y <*> z
+
+  x' :: Maybe Int
+  x' = elemIndex 3 [1, 2, 3, 4, 5]
+
+  y' :: Maybe Int
+  y' = elemIndex 3 [1, 2, 3, 4, 5]
+
+  max' :: Int -> Int -> Int
+  max' = max
+
+  maxed :: Maybe Int
+  maxed = max' <$> x' <*> y
+
+  xs = [1, 2, 3]
+  ys = [4, 5, 6]
+
+  x'' :: Maybe Integer
+  x'' = lookup 3 $ zip xs ys
+
+  y'' :: Maybe Integer
+  y'' = lookup 2 $ zip xs ys
+
+  summed :: Maybe Integer
+  summed = sum <$> (pure (,) <*> x' <*> y')
+#+END_SRC
+
+* Exercises: Fixer Upper
+
+#+BEGIN_SRC haskell
+ghci> const <$> Just "Hello" <*> pure "World"
+Just "Hello"
+Just (90,10,"Tierness",[1,2,3])
+#+END_SRC
