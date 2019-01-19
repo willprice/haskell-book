@@ -7,6 +7,7 @@ editor automation, although a bunch are actually CLI programs.
 
 | Tool | Purpose | Description |
 |------|---------|-------------|
+| [hfmt](https://github.com/danstiner/hfmt) | Code formatter | Integrates hlint, hindent, and stylish-haskell together |
 | [stylish-haskell](https://github.com/jaspervdj/stylish-haskell) | Code formatter | Align and sort import statements, remove trailing whitespace, Align case statements, align fields, replace tabs |
 | [hindent](https://github.com/chrisdone/hindent) | Code formatter | Complete Haskell code formatter (stylish-haskell isn't as aggressive in changes) |
 | [hlint](https://github.com/ndmitchell/hlint) | Linter | Code suggestions and simplification, redundancy detection. |
@@ -17,6 +18,10 @@ editor automation, although a bunch are actually CLI programs.
 ### Code formatters
 
 Automatically format your Haskell code.
+
+> hfmt is a tool for formatting Haskell programs. Currently it is simply a gofmt
+> style wrapper of the excellent tools hlint, hindent, and stylish-haskell.
+-- [*hfmt*](https://github.com/danstiner/hfmt)
 
 > A simple Haskell code prettifier. The goal is not to format all of the code in
 > a file, since I find those kind of tools often "get in the way". However,
