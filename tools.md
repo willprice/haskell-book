@@ -66,6 +66,11 @@ refactoring, automatic type annotation, syntax checking etc.
 > Complete interactive development program for Haskell
 -- [*intero*](https://github.com/chrisdone/intero) ([intero-vim](https://github.com/parsonsmatt/intero-neovim), [intero-vim (vim8.1)](https://github.com/Fyrbll/intero-vim)) 
 
+> This project aims to be the universal interface to a growing number of Haskell
+> tools, providing a full-featured and easy to query backend for editors and
+> IDEs that require Haskell-specific functionality.
+-- [*HIE - Haskell IDE Engine*](https://github.com/haskell/haskell-ide-engine) ([LanguageClient-neovim](https://github.com/autozimu/LanguageClient-neovim))
+
 ## IDE like features
 
 > HaRe can rename symbols, lift definitions, convert equivalent Haskell
