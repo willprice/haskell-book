@@ -66,6 +66,15 @@ refactoring, automatic type annotation, syntax checking etc.
 > Complete interactive development program for Haskell
 -- [*intero*](https://github.com/chrisdone/intero) ([intero-vim](https://github.com/parsonsmatt/intero-neovim), [intero-vim (vim8.1)](https://github.com/Fyrbll/intero-vim)) 
 
+## IDE like features
+
+> HaRe can rename symbols, lift definitions, convert equivalent Haskell
+> constructs like ifs and cases and more while preserving program semantics,
+> types and correctly handling indentation. Only HaRe can execute identity
+> transformation!
+-- [HaRe](https://github.com/RefactoringTools/HaRe)
+([vim-hare](https://github.com/vmchale/vim-hare))
+
 ## Resources
 
 - [Tools in the Haskell ecosystem](https://github.com/haskell/haskell-ide-engine/blob/master/docs/Tools.md)
