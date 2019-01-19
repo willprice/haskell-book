@@ -63,6 +63,7 @@ refactoring, automatic type annotation, syntax checking etc.
 
 ## Resources
 
+- [Tools in the Haskell ecosystem](https://github.com/haskell/haskell-ide-engine/blob/master/docs/Tools.md)
 - [Writing Haskell with Vim (Nov 2017)](https://monicalent.com/blog/2017/11/19/haskell-in-vim/)
 - [Haskell Development with Neovim (July 2017)](https://blog.jez.io/haskell-development-with-neovim/)
 - [Vim and Haskell in 2017 (reddit)](https://www.reddit.com/r/haskell/comments/6nvgla/vim_and_haskell_in_2017/)
