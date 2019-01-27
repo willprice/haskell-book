@@ -21,8 +21,6 @@ description:         Please see the README on GitHub at <https://github.com/will
 
 dependencies:
 - base >= 4.7 && < 5
-- checkers >= 0.4.11
-- QuickCheck >= 2.12.6.1
 
 library:
   source-dirs: src
@@ -39,3 +37,5 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - applicative-checkers
+    - checkers >= 0.4.11
+    - QuickCheck >= 2.12.6.1
