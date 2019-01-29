@@ -11,11 +11,11 @@ Contents:
   * [Distributivity](#Distributivity)
   * [Identity element](#Identity-element)
   * [Inverse element](#Inverse-element)
-* [Type classes](Type-classes)
-  * [Semigroup](Semigroup)
-  * [Monoid](Monoid)
-  * [Functor](Functor)
-  * [Applicative](Applicative)
+* [Type classes](#Type-classes)
+  * [Semigroup](#Semigroup)
+  * [Monoid](#Monoid)
+  * [Functor](#Functor)
+  * [Applicative](#Applicative)
 
 
 ## Binary operator properties
@@ -110,7 +110,7 @@ A binary operator `￮` and a set `A` form a semigroup: `(￮, A)` if...
 
 * `￮` is [associativity](#Associativity)
 
-Examples: 
+Examples:
 
 - `(+, R)`: `(1 + 2) + 3 = 1 + (2 + 3)`
 - `(++, [a])`: `[1] ++ ([2] ++ [3]) = [1, 2, 3] = ([1] ++ [2]) ++ [3]`
