@@ -108,7 +108,7 @@ Non-examples:
 
 A binary operator `￮` and a set `A` form a semigroup: `(￮, A)` if...
 
-* `￮` is [associativity](#Associativity)
+* `￮` is [associative](#Associativity)
 
 Examples:
 
@@ -132,7 +132,7 @@ class Semigroup (a :: *) where
 
 A binary operator `￮` and a set `A` form a Monoid: `(￮, A)` if...
 
-* `￮` is [associativity](#Associativity)
+* `￮` is [associative](#Associativity)
 * `￮` has an [identity element](#Identity-element) (`mempty`)
 
 
