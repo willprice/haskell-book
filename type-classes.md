@@ -146,7 +146,10 @@ class Semigroup a => Monoid (a :: *) where
 
 ## Functor
 
-A [mathematical functor](
+A [mathematical functor](https://en.wikipedia.org/wiki/Functor) is a 'map
+between categories', in programming language speak this can be more plainly
+thought of as a way of applying functions over structure (like applying a
+function to every item in a list, or tree, or graph etc)
 
 
 Laws:
