@@ -90,4 +90,22 @@ Just "Hello"
 Just (90,10,"Tierness",[1,2,3])
 #+END_SRC
 
-Current Page: 733
+* Chapter Exercises:
+
+1.
+   - Type: ~[]~
+   - ~pure :: a -> [a]~
+   - ~(<*>) :: [(a -> b)] -> [a] -> [b]~
+2.
+   - Type: ~IO~
+   - ~pure :: a -> IO a~
+   - ~(<*>) :: IO (a -> b) -> IO a -> IO b~
+3.
+   - Type: ~(,) a~
+   - ~pure :: b -> (a, b)~
+   - ~(<*>) :: (a, (b -> c)) -> (a, b) -> (a, c)~
+
+4.
+   - Type: ~(->) e~
+   - ~pure :: a -> (e -> a)~
+   - ~(<*>) :: (e -> (a -> b))  -> (e -> a) -> (e -> b)~
